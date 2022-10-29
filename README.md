@@ -5,9 +5,10 @@ general endpoint that shows a list of articles that have been created by differe
 and anybody that calls this endpoint, should be able to read a blog created by them or
 other users.
 Requirements
-1. Users should have a first_name, last_name, email, password, (you can add other
+
+- [x] 1. Users should have a first_name, last_name, email, password, (you can add other
 attributes you want to store about the user)
-2. A user should be able to sign up and sign in into the blog app
+- [x] 2. A user should be able to sign up and sign in into the blog app
 3. Use JWT as authentication strategy and expire the token after 1 hour
 4. A blog can be in two states; draft and published
 5. Logged in and not logged in users should be able to get a list of published blogs
@@ -22,7 +23,7 @@ state
 12.The owner of the blog should be able to get a list of their blogs.
 a. The endpoint should be paginated
 b. It should be filterable by state
-13.Blogs created should have title, description, tags, author, timestamp, state,
+- [x] 13.Blogs created should have title, description, tags, author, timestamp, state,
 read_count, reading_time and body.
 14.The list of blogs endpoint that can be accessed by both logged in and not logged
 in users should be paginated,
