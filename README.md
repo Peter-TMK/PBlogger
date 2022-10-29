@@ -18,14 +18,13 @@ created
 8. When a blog is created, it is in draft state
 9. The owner of the blog should be able to update the state of the blog to published
 10. The owner of a blog should be able to edit the blog in draft or published state
-11. The owner of the blog should be able to delete the blog in draft or published
-state
-12.The owner of the blog should be able to get a list of their blogs.
+11. The owner of the blog should be able to delete the blog in draft or published state
+12. The owner of the blog should be able to get a list of their blogs.
 a. The endpoint should be paginated
 b. It should be filterable by state
-- [x] 13.Blogs created should have title, description, tags, author, timestamp, state,
+- [x] 13. Blogs created should have title, description, tags, author, timestamp, state,
 read_count, reading_time and body.
-14.The list of blogs endpoint that can be accessed by both logged in and not logged
+14. The list of blogs endpoint that can be accessed by both logged in and not logged
 in users should be paginated,
 a. default it to 20 blogs per page.
 
