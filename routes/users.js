@@ -3,7 +3,8 @@ const router = express.Router();
 const User = require("../model/User");
 const Post = require("../model/Post");
 const bcrypt = require('bcrypt');
-
+const CryptoJS = require("crypto-js")
+const PASSWORD_SECRET_KEY = process.env.PASSWORD_SECRET_KEY
 // Get User by ID
 router.get("/:id", async (req, res) => {
     try {
@@ -32,8 +33,8 @@ router.get("/", async (req, res) => {
 router.put("/:id", async (req, res)=> {
     if (req.body.userId === req.params.id) {
         if(req.body.password){
-            const salt = await bcrypt.genSalt(10);
-            req.body.password = await bcrypt.hash(req.body.password, salt);
+            // const salt = await bcrypt.genSalt(10);
+            req.body.password = CryptoJS.AES.encrypt(req.body.password, PASSWORD_SECRET_KEY).toString();
         }
         try {
             const updatedUser = await User.findByIdAndUpdate(req.params.id, {
@@ -55,9 +56,9 @@ router.delete("/:id", async (req, res)=> {
         try {
             const user = await User.findById(req.params.id);
             try{
-                // This line below deletes users posts
+                // The line below deletes users posts
                 await Post.deleteMany({ username: user.username });
-                // This line above deletes users posts
+                // The line above deletes users posts
                 await User.findByIdAndDelete(req.params.id);
                 res.status(200).json("User has been deleted!");
         } catch (err) {
