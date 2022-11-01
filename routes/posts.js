@@ -2,9 +2,10 @@ const express = require('express')
 const router = express.Router();
 // const User = require("../model/User");
 const Post = require("../model/Post");
+const { verifyToken, verifyTokenAndAuthorization } = require('./verifyToken');
 
 // Create Post
-router.post("/", async (req, res) => {
+router.post("/", verifyToken, async (req, res) => {
     const newPost = new Post(req.body);
     try {
         const savedPost = await newPost.save();
@@ -15,7 +16,7 @@ router.post("/", async (req, res) => {
 });
 
 // Get Post by ID
-router.get("/:id", async (req, res) => {
+router.get("/:id", verifyToken, async (req, res) => {
     // try {
         // let post;
         const post = await Post.findById(req.params.id);
@@ -31,6 +32,33 @@ router.get("/:id", async (req, res) => {
     // }
 });
 
+
+// Get All Posts or Search by Title, author or tag
+router.get("/", async (req, res) => {
+    const title = req.query.title;
+    const author = req.query.author;
+    const tag = req.query.tag;
+    try{
+        let posts;
+        if(title){
+            posts = await Post.find({ title });
+        } else if(author){
+            posts = await Post.find({ author }).sort({ _id: -1 }).limit(20);
+        } else if(tag){
+            posts = await Post.find({
+                tags: {
+                    $in: [tag],
+                },
+            }).sort({ _id: -1 }).limit(20);
+        } else {
+            posts = await Post.find().sort({ _id: -1 }).limit(20);
+        }
+        res.status(200).json(posts);
+    } catch(err){
+        res.status(500).json(err);
+    }
+})
+
 // Get All Posts
 // router.get("/", async (req, res) => {
 //     try{
@@ -43,32 +71,6 @@ router.get("/:id", async (req, res) => {
 //         res.status(500).json(err)
 //     }
 // });
-
-// Get All Posts or Search by Title, author or tag
-router.get("/", async (req, res) => {
-    const title = req.query.title;
-    const author = req.query.author;
-    const tag = req.query.tag;
-    try{
-        let posts;
-        if(title){
-            posts = await Post.find({ title });
-        } else if(author){
-            posts = await Post.find({ author });
-        } else if(tag){
-            posts = await Post.find({
-                tags: {
-                    $in: [tag],
-                },
-            });
-        } else {
-            posts = await Post.find().sort({ _id: -1 }).limit(20);
-        }
-        res.status(200).json(posts);
-    } catch(err){
-        res.status(500).json(err);
-    }
-})
 
 // ================================================================
 // userRoute.get("/", verifyTokenAndAdmin, async (req, res) => {
@@ -86,44 +88,27 @@ router.get("/", async (req, res) => {
 
 
 // Update Post
-router.put("/:id", async (req, res)=> {
-    try {
-        const post = await Post.findById(req.params.id);
-        if(post.username === req.body.username){
-            try{
-                const updatedPost = await Post.findByIdAndUpdate(req.params.id,{
-                    $set: req.body
-                },{new:true}
-                );
-                res.status(200).json(updatedPost);
-            } catch (err) {
-                res.status(500).json(err);
-            }
-        } else {
-            res.status(401).json("You can update only your post!")
+router.put("/:id", verifyToken, async (req, res)=> {
+   try{
+        const updatedPost = await Post.findByIdAndUpdate(req.params.id,{
+          $set: req.body
+        },
+        {new: true}
+        );
+        res.status(200).json(updatedPost);
+        } catch (err) {
+          res.status(500).json(err);
         }
-    } catch (err) {
-        res.status(500).json(err)
-    }
 });
 
 
 // Delete Post
-router.delete("/:id", async (req, res)=> {
-    try {
-        const post = await Post.findById(req.params.id);
-        if(post.username === req.body.username){
-            try{
-                await Post.deleteOne();
-                res.status(200).json("Post has been deleted!");
-            } catch (err) {
-                res.status(500).json(err);
-            }
-        } else {
-            res.status(401).json("You can delete only your post!")
-        }
+router.delete("/:id", verifyToken, async (req, res)=> {
+    try{
+        await Post.findByIdAndDelete(req.params.id);
+        res.status(200).json("Post has been deleted!");
     } catch (err) {
-        res.status(500).json(err)
+        res.status(500).json(err);
     }
 });
 

@@ -5,7 +5,7 @@ that calls this endpoint, should be able to read a blog created
 by them or other users.
 
 Requirements:
-1,2,5,6
+1,2,3,4,5,6,7,8
 ___
 1. Users should have a first_name, last_name, email, password, (you can add other attributes you want to store about the user)
 2. A user should be able to sign up and sign in into the blog app
