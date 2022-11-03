@@ -3,7 +3,7 @@
 const express = require('express');
 const router = express.Router();
 const User = require("../model/User");
-const bcrypt = require('bcrypt');
+// const bcrypt = require('bcrypt');
 const CryptoJS = require("crypto-js")
 const PASSWORD_SECRET_KEY = process.env.PASSWORD_SECRET_KEY
 const jwt = require('jsonwebtoken');
@@ -44,14 +44,13 @@ router.post("/login", async (req, res) => {
         const OriginalPassword = decryptedPassword.toString(CryptoJS.enc.Utf8);
 
         OriginalPassword !== req.body.password && res.status(401).json("Wrong login details!");
-        // res.status(200).json(user)
-        // Destructuring the user to send other details except password
 
         const accessToken = jwt.sign({
             id: user._id
         }, JWT_SECRET_KEY, {expiresIn: "1h"}
         );
 
+        // Destructuring the user to send other details except password
         const { password, ...other } = user._doc;
         res.status(200).json({...other, accessToken});
     } catch (err) {

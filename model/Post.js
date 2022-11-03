@@ -9,8 +9,12 @@ const PostSchema = new Schema({
     author: { type: String },
     state: { type: String, enum: ['draft', 'published'], default: 'draft'},
     read_count: { type: Number, default: 0 },
-    reading_time: { type: Number},
-    body: { type: String, required: true }
+    reading_time: { type: String },
+    body: { type: String, required: true },
+    owner: {
+        type: Schema.Types.ObjectId,
+        ref: "User"
+    }
 }, {timestamps: true});
 
 module.exports = mongoose.model("Post", PostSchema)

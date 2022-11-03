@@ -6,10 +6,12 @@ const verifyToken = (req, res, next)=>{
     if(authHeader){
         const token = authHeader.split(" ")[1];
         jwt.verify(token, JWT_SECRET_KEY, (err, user)=>{
-            if(err)
-            res.status(403).json("Invalid Token!");
-            req.user = user;
-            next();
+            if(user){
+                req.user = user;
+                next();
+            } else if(err) {
+                res.status(403).json("Invalid Token!");
+            }
         })
 
     } else {
@@ -17,17 +19,16 @@ const verifyToken = (req, res, next)=>{
     }
 };
 
-const verifyTokenAndAuthorization = (req, res, next)=>{
-    verifyToken(req, res, ()=>{
-        if (req.user.id === req.params.id){
-            next();
-        } else {
-            res.status(403).json("You are not permitted!")
-        }
-    });
-}
+// const verifyTokenAndAuthorization = (req, res, next)=>{
+//     verifyToken(req, res, ()=>{
+//         if (req.user.id === req.params.id){
+//             next();
+//         } else {
+//             res.status(403).json("You are not permitted!")
+//         }
+//     });
+// }
 
 module.exports = {
-    verifyToken,
-    verifyTokenAndAuthorization
+    verifyToken
 };

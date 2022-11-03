@@ -1,15 +1,18 @@
 const express = require('express')
 const router = express.Router();
 // const User = require("../model/User");
+const readTime = require("./readTime")
 const Post = require("../model/Post");
-const { verifyToken, verifyTokenAndAuthorization } = require('./verifyToken');
+const { verifyToken } = require('./verifyToken');
+const { count } = require('../model/Post');
 
 // Create Post
 router.post("/", verifyToken, async (req, res) => {
     const newPost = new Post(req.body);
     try {
-        const savedPost = await newPost.save();
-        res.status(200).json(savedPost);
+        newPost.reading_time = readTime(newPost.body).toString() + " minute(s) read"
+        await newPost.save();
+        res.status(200).json(newPost);
     } catch (err) {
         res.status(500).json(err);
     }
@@ -23,6 +26,7 @@ router.get("/:id", verifyToken, async (req, res) => {
         if(!post){
             return res.status(404).send('Post not found!')
         }
+        post.reading_time = readTime(post.body).toString() + " minute(s) read"
         post.read_count += 1;
         await post.save();
 
@@ -33,32 +37,104 @@ router.get("/:id", verifyToken, async (req, res) => {
 });
 
 
+// // Get Post by username
+// router.get("/:username", verifyToken, async (req, res) => {
+//     // try {
+//         // let post;
+//         const post = await Post.findById(req.params.id);
+//         if(!post){
+//             return res.status(404).send('Post not found!')
+//         }
+//         post.read_count += 1;
+//         await post.save();
+
+//         res.status(200).json(post);
+//     // } catch (err) {
+//     //     res.status(500).json(err)
+//     // }
+// });
+
 // Get All Posts or Search by Title, author or tag
-router.get("/", async (req, res) => {
+// router.get("/", verifyToken, async (req, res) => {
+//     const title = req.query.title;
+//     const author = req.query.author;
+//     const tag = req.query.tag;
+//     try{
+//         let posts;
+//         if(title){
+//             posts = await Post.find({ title });
+//         } else if(author){
+//             posts = await Post.find({ author }).sort({ _id: -1 }).limit(20);
+//         } else if(tag){
+//             posts = await Post.find({
+//                 tags: {
+//                     $in: [tag],
+//                 },
+//             }).sort({ _id: -1 }).limit(20);
+//         } else {
+//             posts = await Post.find().sort({ _id: -1 }).limit(20);
+//         }
+//         // posts.reading_time = readTime(posts.body)
+//         res.status(200).json(posts);
+//     } catch(err){
+//         res.status(500).json(err);
+//     }
+// })
+
+// Get All Posts or Search by Title, author or tag
+router.get("/", verifyToken, async (req, res) => {
     const title = req.query.title;
     const author = req.query.author;
     const tag = req.query.tag;
+    const state = req.query.state;
+    const { page=1, limit=20 } = req.query;
     try{
         let posts;
         if(title){
             posts = await Post.find({ title });
         } else if(author){
-            posts = await Post.find({ author }).sort({ _id: -1 }).limit(20);
+            posts = await Post.find({ author }).sort({ _id: -1 }).limit(limit*1).skip((page-1)*limit).exec();
+        } else if(state){
+            posts = await Post.find({ state }).sort({ _id: -1 }).limit(limit*1).skip((page-1)*limit).exec();
         } else if(tag){
             posts = await Post.find({
                 tags: {
                     $in: [tag],
                 },
-            }).sort({ _id: -1 }).limit(20);
+            }).sort({ _id: -1 }).limit(limit*1).skip((page-1)*limit).exec();
         } else {
-            posts = await Post.find().sort({ _id: -1 }).limit(20);
+            posts = await Post.find().sort({ reading_time: -1 }).limit(limit*1).skip((page-1)*limit).exec();
+            
         }
-        res.status(200).json(posts);
+        // posts.reading_time = readTime(posts.body)
+        const count = await Post.countDocuments();
+        res.status(200).json({
+            posts,
+            totalPages: Math.ceil(count / limit),
+            currentPage: page
+        });
     } catch(err){
         res.status(500).json(err);
     }
 })
 
+// // Get Published Post
+// router.get("/pub", async (req, res) => {
+//     // try {
+//         // let post;
+//         const post = await Post.find({ state: "published"});
+//         if(!post){
+//             return res.status(404).send('Post not found!')
+//         }
+//         // post.reading_time = readTime(post.body).toString() + " minute(s) read"
+            
+//         // await post.save();
+//         res.status(200).json(post);
+        
+//     // } catch (err) {
+//     //     res.status(500).json(err)
+//     // }
+// });
 // Get All Posts
 // router.get("/", async (req, res) => {
 //     try{
