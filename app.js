@@ -19,12 +19,12 @@ app.use("/api/posts", postRoute)
 app.use("/api/pubPosts", pubRoute)
 
 // routes
-const UserControls = require("./controllers/UserController");
-// const PostControls = require("./controllers/UserController");
-app.get("/users", UserControls.all);
-app.get("/users/create", UserControls.create);
-app.get("/users/:username", UserControls.find);
-app.get("/users/:username/posts", UserControls.getAllPosts);
+// const UserControls = require("./controllers/UserController");
+// // const PostControls = require("./controllers/UserController");
+// app.get("/users", UserControls.all);
+// app.get("/users/create", UserControls.create);
+// app.get("/users/:username", UserControls.find);
+// app.get("/users/:username/posts", UserControls.getAllPosts);
 
 app.listen(PORT || 7000, ()=>{
     console.log(`Server is running at http://localhost:${PORT}`)

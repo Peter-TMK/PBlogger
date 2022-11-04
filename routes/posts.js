@@ -4,13 +4,13 @@ const router = express.Router();
 const readTime = require("./readTime")
 const Post = require("../model/Post");
 const { verifyToken } = require('./verifyToken');
-const { count } = require('../model/Post');
+// const { count } = require('../model/Post');
 
 // Create Post
 router.post("/", verifyToken, async (req, res) => {
     const newPost = new Post(req.body);
     try {
-        newPost.reading_time = readTime(newPost.body).toString() + " minute(s) read"
+        newPost.reading_time = readTime(newPost.body)
         await newPost.save();
         res.status(200).json(newPost);
     } catch (err) {
@@ -22,11 +22,11 @@ router.post("/", verifyToken, async (req, res) => {
 router.get("/:id", verifyToken, async (req, res) => {
     // try {
         // let post;
-        const post = await Post.findById(req.params.id);
+        const post = await Post.findById(req.params.id).populate("owner");
         if(!post){
             return res.status(404).send('Post not found!')
         }
-        post.reading_time = readTime(post.body).toString() + " minute(s) read"
+        post.reading_time = readTime(post.body)
         post.read_count += 1;
         await post.save();
 

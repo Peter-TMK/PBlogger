@@ -28,7 +28,7 @@ router.get("/", async (req, res) => {
     const title = req.query.title;
     const author = req.query.author;
     const tag = req.query.tag;
-    let sort = req.query.sort
+    const sort = req.query.sort
     const { page=1, limit=20 } = req.query;
     try{
         const ValidSort = ['read_count', 'reading_time', 'timestamp'].includes(sort)
