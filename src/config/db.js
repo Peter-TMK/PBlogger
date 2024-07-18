@@ -1,12 +1,15 @@
 const mongoose = require("mongoose");
-// require("dotenv").config();
-require("dotenv/config");
+require("dotenv").config();
+// require("dotenv/config");
 
 mongoose.set("strictQuery", false);
 
 const connectDB = async () => {
   try {
-    const connection = await mongoose.connect(process.env.MONGO_URL);
+    const connection = await mongoose.connect(process.env.MONGO_URL, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    });
     console.log(
       `Database connected successfully: ${connection.connection.host}`
     );

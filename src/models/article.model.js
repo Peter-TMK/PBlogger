@@ -1,9 +1,13 @@
 const mongoose = require("mongoose");
 
-const articleSchema = new mongoose.Schema({
-  title: String,
-  article: String,
-});
+const articleSchema = new mongoose.Schema(
+  {
+    title: { type: String, unique: true },
+    article: String,
+    tags: [{ type: String }],
+  },
+  { timestamps: true }
+);
 
 articleSchema.set("toJSON", {
   transform: (document, returnedObject) => {
