@@ -1,0 +1,292 @@
+{
+	"info": {
+		"_postman_id": "d36492ef-46a3-4080-9f8f-b5cde9aacf0c",
+		"name": "Blog API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "25296663"
+	},
+	"item": [
+		{
+			"name": "POST register/",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{BASE_URL}}/auth/register",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"auth",
+						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "POST login/",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"email\": \"Peter@gmail.co\",\r\n  \"password\": \"Figur\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{BASE_URL}}/auth/login",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"auth",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "POST article/",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"title\":\"Peteros\",\r\n  \"article\":\"1-2-1-2-Figuring it out already jere\",\r\n  \"tags\":[\"blog\",\"message\"]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{BASE_URL}}/articles",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"articles"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET all articles/",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{BASE_URL}}/articles",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"articles"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET single article/",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{BASE_URL}}/articles/6691219c5b32e83461a456f2",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"articles",
+						"6691219c5b32e83461a456f2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "UPDATE single article/",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"title\":\"Peteros\",\r\n  \"article\":\"1-2-1-2-Figuring it out already jere\",\r\n  \"tags\":[\"blog\",\"message\"]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{BASE_URL}}/articles/6697cc68e19ca214ee8b24df",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"articles",
+						"6697cc68e19ca214ee8b24df"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DELETE/",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{BASE_URL}}/articles/668f960b33bfac4df4746205",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"articles",
+						"668f960b33bfac4df4746205"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "SORT all articles/",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{BASE_URL}}/articles/search?sortBy=createdAt&order=desc",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"articles",
+						"search"
+					],
+					"query": [
+						{
+							"key": "sortBy",
+							"value": "createdAt"
+						},
+						{
+							"key": "order",
+							"value": "desc"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "SEARCH articles/",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{BASE_URL}}/articles/search?title=line",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"articles",
+						"search"
+					],
+					"query": [
+						{
+							"key": "title",
+							"value": "line"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "FILTER articles by TAGS/",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{BASE_URL}}/articles/search?tags=blog",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"articles",
+						"search"
+					],
+					"query": [
+						{
+							"key": "tags",
+							"value": "blog"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PAGINATION/",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{BASE_URL}}/articles/search?page=1&limit",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"articles",
+						"search"
+					],
+					"query": [
+						{
+							"key": "page",
+							"value": "1"
+						},
+						{
+							"key": "limit",
+							"value": null
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "BASE_URL",
+			"value": "http://localhost:3003/api",
+			"type": "string"
+		}
+	]
+}

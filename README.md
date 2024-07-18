@@ -24,6 +24,6 @@ Error handling
 
 Testing(using jest/supertest)
 
-Documentation(YET TO BE IMPLEMENTED)
+Documentation(using Postman && SwaggerHub)
 
-LINK TO DOCUMENTATION - https://documenter.getpostman.com/view/25296663/2sA3kSnhme
+LINK TO DOCUMENTATION - https://documenter.getpostman.com/view/25296663/2sA3kSnhme OR https://app.swaggerhub.com/apis-docs/tundepeter01/Blog_API/1.0.0
