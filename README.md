@@ -25,3 +25,5 @@ Error handling
 Testing(using jest/supertest)
 
 Documentation(YET TO BE IMPLEMENTED)
+
+LINK TO DOCUMENTATION - https://documenter.getpostman.com/view/25296663/2sA3kSnhme
